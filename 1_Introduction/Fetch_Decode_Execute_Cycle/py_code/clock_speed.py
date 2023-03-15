@@ -1,7 +1,7 @@
 import time
 
 GIGA = 1000000000
-ITERS = 1000000
+ITERS = 1000
 
 
 def main():
