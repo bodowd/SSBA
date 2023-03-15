@@ -1,0 +1,4 @@
+Operation,Python(GHz),C(long w/o optimization)(GHz),C(long w/ -O optimization)(GHz),Go(GHz)
+sum,0.007,1.029,3.813,3.935
+multiplication,0.002,1.265,3.984,3.977
+division,0.011,0.285,3.985,3.978
