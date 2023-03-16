@@ -1,0 +1,5 @@
+https://www.7-cpu.com/cpu/Zen3.html
+
+RAM latency = 47 cycles + 74 ns
+
+CPU is 4.45 GHz
