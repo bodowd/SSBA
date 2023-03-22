@@ -1,0 +1,7 @@
+0xff0000
+6 places => 16^6 = 16777216 numbers
+each place in hexadecimal is 4 bits
+so in binary it is 2^4 = 16777216 numbers
+
+rgb(255,0,0)
+255**3 = 16581375
