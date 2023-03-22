@@ -1,0 +1,8 @@
+I converted base10 to binary first by looking at the binary places chart
+Then convert each 4 bits to the hexadecimal number
+
+
+base10, base16(hexadecimal)
+9,0x9
+136, 0x88 (binary 10001000 = 2^7 + 2^3 = 136)
+247, 0xf7 (binary 1111 0111)
