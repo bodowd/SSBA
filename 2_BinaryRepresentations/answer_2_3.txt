@@ -1,0 +1,18 @@
+two's complement
+
+start with the positive binary number
+invert all the bits
+add 1 to the entire inverted number and IGNORE overflow
+the highest order bit is the sign bit 1 => negative number
+
+127 ->  01111111
+-128 -> 10000000
+-1 ->   11111111 
+1 ->    00000001
+-14 ->  11110010
+
+
+8-bit two's complement to decimal:
+Remember highest order bit is negative. so the 8th bit (index 7) is -128
+10000011 -> -125
+11000100 -> -60

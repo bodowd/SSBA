@@ -1,0 +1,14 @@
+Rules of binary addition:
+0 + 0 = 0
+0 + 1 = 1
+1 + 0 = 1
+1 + 1 =10
+
+    11111111 
++   00001101 
+------------
+   100001100 --> 268
+
+
+if registers are only 8 bits wide, the result has an extra 1 in the 
+    9th bit position because of the carry. This leads to integer overflow
