@@ -5,3 +5,18 @@ so in binary it is 2^4 = 16777216 numbers
 
 rgb(255,0,0)
 255**3 = 16581375
+
+hellohex question
+file size is 17 bytes
+1 byte = 8 bits
+17*8 = 136 bits
+since one hex character can encode 4 bits, 34 characters (34*4=136) can encode 136 bits
+17 bytes * (8 bits / 1 byte) * (1 hex char / 4 bits) = 34 hex chars
+
+$ xxd -g 1 hellohex
+00000000: 68 65 6c 6c 6f 20 77 6f 72 6c 64 20 f0 9f 98 80  hello world ....
+00000010: 0a
+
+68 65 6c 6c 6f 
+in binary
+01101000 01100101 01101100 01101100 01101111
