@@ -1,0 +1,4 @@
+4 --> 100
+65 --> 1000001
+105 -->1101001 
+255 --> 11111111 # larget integer representable in a single byte
