@@ -1,0 +1,45 @@
+It can be beneficial for our hardware to be able to detect overflow in two’s complement. To do so, we’d need a rule for determining—based solely on bit patterns—if overflow has occurred. Can you describe such a rule? Consider the following examples:
+
+// In this case there is a carry out, but the result is correct
+110000000 (carry row)
+ 11000000 (-64)
+ 01000000 (64)
+--------------
+ 00000000 (0, but there was a carry out!)
+// In this case the result is incorrect but there is no carry out
+010000000 (carry row)
+ 01000000 (64)
+ 01000000 (64)
+--------------
+ 10000000 (-128)
+// In this case there is a carry out and the result is incorrect
+100000000 (carry row)
+ 10000000 (-128)
+ 10000000 (-128)
+----------------
+ 00000000 (0)
+
+With two’s complement integer addition, 
+we can’t simply look at the final carry out bit to determine overflow,
+as it is in some cases valid for a number to go from negative to positive 
+(specifically when a large enough number is added to it).
+This will occur if there is both a carry out bit,
+and a carry in bit (a carry into the most significant place).
+However if there is a carry in without a carry out,
+we have overflowed up into negative numbers,
+or if there is a carry out without a carry in,
+we have overflowed down into positive numbers.
+The operation to determine overflow, then, is XOR(carry_in, carry_out).
+
+For first example, carry_in = 1 and carry_out = 1
+1^1 = 0 --> no overflow
+
+2nd example:
+carry_in = 1
+carry_out = 0
+1 ^ 0 = 1 --> overflow
+
+3rd example:
+carry_in=0
+carry_out=1
+0^1 = 1 --> overflow

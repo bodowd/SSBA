@@ -1,0 +1,21 @@
+❯ xxd -b tcpheader
+00000000: 10101111 00000000 10111100 00000110 01000100 00011110  ....D.
+00000006: 01110011 01101000 11101111 11110010 10100000 00000010  sh....
+0000000c: 10000001 11111111 01010110 00000000                    ..V.
+
+
+(8-bit chunks)
+https://en.wikipedia.org/wiki/Transmission_Control_Protocol#TCP_segment_structure
+sequence number: Octet 4 to 8 -->  01000100 00011110 01110011 01101000 --> 1142846312
+acknowledgment number: Octet 8 to 12 --> 11101111 11110010 10100000 00000010   --> 4025655298
+source port: Octet 0 to 2 --> 10101111 00000000 --> 44800
+destination port: Octet 2 to 4 --> 10111100 00000110 --> 48134
+
+
+
+official solution:
+python -c "print('\nSEQ:\t{}\nACK:\t{}\nsource:\t{}\ndest:\t{}'.format(
+0x$(xxd -p -s 4 -l 4 tcpheader),
+0x$(xxd -p -s 8 -l 4 tcpheader),
+0x$(xxd -p -s 0 -l 2 tcpheader),
+0x$(xxd -p -s 2 -l 2 tcpheader)))"

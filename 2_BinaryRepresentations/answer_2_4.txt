@@ -1,0 +1,21 @@
+two's complement addition
+
+01111111 --> 127
+10000000 --> -128
+--------
+11111111 --> -1
+
+7th order bit is 128 and negative
+6th to 0th all ones is 127
+-128 + 127
+
+Negating a number in two's complement requires flipping the bits then adding one.
+Performing subtraction requires negating the second argument then adding it to the first.
+This is one of the best features of two's complement.
+
+Value of the most significant bit in 8-bit two's complement:
+-128 (7th order bit)
+
+Of 32-bit two's complement?
+(the most significant bit has a value of -2^(n-1))
+-2147483648
