@@ -4,11 +4,9 @@ extern int sum_to_n(int n);
 extern int binary_convert(char *bits);
 extern int pangram(char *phrase);
 
-void setUp(void) {
-}
+void setUp(void) {}
 
-void tearDown(void) {
-}
+void tearDown(void) {}
 
 void test_sum_to_0(void) { TEST_ASSERT_EQUAL(0, sum_to_n(0)); }
 void test_sum_to_1(void) { TEST_ASSERT_EQUAL(1, sum_to_n(1)); }
@@ -26,7 +24,8 @@ void test_convert_10101101(void) {
 
 void test_pangram_empty(void) { TEST_ASSERT_FALSE(pangram("")); }
 void test_pangram_alpha(void) {
-  TEST_ASSERT_TRUE(pangram("abcdefghijklmnopqrstuvwxyz"));
+  // TEST_ASSERT_TRUE(pangram("abcdefghijklmnopqrstuvwxyz"));
+  TEST_ASSERT_TRUE(pangram("ABCDEFGHIJKLMNOPQRSTUVWXYZ"))
 }
 void test_pangram_punctuated(void) {
   TEST_ASSERT_TRUE(pangram("abc, def! ghi... jkl25; mnopqrstuvwxyz"));
@@ -42,26 +41,26 @@ void test_pangram_phrase(void) {
 }
 
 int main(void) {
-    UNITY_BEGIN();
+  UNITY_BEGIN();
 
-    RUN_TEST(test_sum_to_0);
-    RUN_TEST(test_sum_to_1);
-    RUN_TEST(test_sum_to_3);
-    RUN_TEST(test_sum_to_10);
-    RUN_TEST(test_sum_to_1000);
+  RUN_TEST(test_sum_to_0);
+  RUN_TEST(test_sum_to_1);
+  RUN_TEST(test_sum_to_3);
+  RUN_TEST(test_sum_to_10);
+  RUN_TEST(test_sum_to_1000);
 
-    RUN_TEST(test_convert_0);
-    RUN_TEST(test_convert_1);
-    RUN_TEST(test_convert_110);
-    RUN_TEST(test_convert_1111);
-    RUN_TEST(test_convert_10101101);
+  RUN_TEST(test_convert_0);
+  RUN_TEST(test_convert_1);
+  RUN_TEST(test_convert_110);
+  RUN_TEST(test_convert_1111);
+  RUN_TEST(test_convert_10101101);
 
-    RUN_TEST(test_pangram_empty);
-    RUN_TEST(test_pangram_alpha);
-    RUN_TEST(test_pangram_punctuated);
-    RUN_TEST(test_pangram_incomplete);
-    RUN_TEST(test_pangram_mixed_case);
-    RUN_TEST(test_pangram_phrase);
+  RUN_TEST(test_pangram_empty);
+  RUN_TEST(test_pangram_alpha);
+  RUN_TEST(test_pangram_punctuated);
+  RUN_TEST(test_pangram_incomplete);
+  RUN_TEST(test_pangram_mixed_case);
+  RUN_TEST(test_pangram_phrase);
 
-    return UNITY_END();
+  return UNITY_END();
 }

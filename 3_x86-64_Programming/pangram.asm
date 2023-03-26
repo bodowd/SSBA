@@ -5,33 +5,34 @@ pangram:
     cmp [rdi], byte 0 ; check edge case if input is empty string, otherwise iterate through the string
     jz emptyString
 L1:
-    mov r8, 122 ; reset-- if 122 - current ascii dec rep >= 25, it is a lower case number
-    mov r9, 0 ; reset --use this to convert to uppper case
-    mov r10, 90 ; reset -- use this to check if upper case 
-    ; mov r13, 0 ; reset -- store upper case letters in r13
-    
     cmp [rdi], byte 0 ; check if we are at the end of the string
     jz done ; if so, go to done
-    sub r8, [rdi] ; if 122 - rdi <= 25, it is lower case
-    cmp r8, 25 
-    jle toUpper ; subtract 32 from rdi to convert it to upper case
-    sub r10, [rdi]  ; other wise the number is not a lower case, check if it is upper case
-    cmp r10, 25
-    jle storeUpper ; if this value is <=25 it is upper case
+    cmp [rdi], byte 122
+    jle gt97 ; if <= 122, check if >97
     jmp next ; otherwise the character is not a-z or A-Z, go to next iteration
+gt97:
+    ; check if value >= 97. if yes then it's a lower case a-z
+    cmp [rdi], byte 97
+    jge toUpper
+    jl lt90 ; check if it is upper case AZ char
+lt90:
+    cmp [rdi], byte 90
+    jle gt65 ; if <= 90, check if >= 65
+    jmp next ; otherwise its not AZ char
+gt65:
+    cmp [rdi], byte 65
+    mov r8, [rdi] ; move to r8 for setting bits
+    jge setBits; it is an upper case AZ char
+    jmp next ; otherwise it's not a azAZ char
 toUpper:
-    mov r9, [rdi]
-    sub r9, 32 ; subtracting 32 converts it to upper case. Between 65 and 90
-    mov r13, r9 ; store upper case in r13
-    jmp setBits
-storeUpper:
-    mov r13, [rdi] ; rdi is already upper case, store it in r13
+    mov r8, [rdi]
+    sub r8, 32
     jmp setBits
 setBits: 
-    ; at this point, upper case char is stored in r13
-    sub r13, 65 ; change range of the current number to between 0 and 25 by subtracting 65. 
+    ; at this point, upper case char is stored in r8
+    sub r8, 65 ; change range of the current number to between 0 and 25 by subtracting 65. 
                 ; This is to represent a char in alphabet, and we will shift by that amount
-    mov rcx, r13 ; we will shift by the ascii number. Shift count must go in rcx
+    mov rcx, r8 ; we will shift by the ascii number. Shift count must go in rcx
     mov r11, 1 ; we will store the result of the bit shift in r11. First set it to 1
     shl r11, cl ; shift r11 left by the normalized number in r13
     or rax, r11 ; OR rax and r11 to mark if we have seen a character
