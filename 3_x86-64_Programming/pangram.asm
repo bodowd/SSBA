@@ -32,13 +32,14 @@ setBits:
     ; at this point, upper case char is stored in r8
     sub r8, 65 ; change range of the current number to between 0 and 25 by subtracting 65. 
                 ; This is to represent a char in alphabet, and we will shift by that amount
-    mov rcx, r8 ; we will shift by the ascii number. Shift count must go in rcx
-    mov r11, 1 ; we will store the result of the bit shift in r11. First set it to 1
-    shl r11, cl ; shift r11 left by the normalized number in r13
-    or rax, r11 ; OR rax and r11 to mark if we have seen a character
-                ; each bit from 0 to 25 represents a character
-                ; if we have seen it, we mark it as 1
-                ; OR lets us keep the 1 no matter if we see duplicates or a new character
+    ; mov rcx, r8 ; we will shift by the ascii number. Shift count must go in rcx
+    ; mov r11, 1 ; we will store the result of the bit shift in r11. First set it to 1
+    ; shl r11, cl ; shift r11 left by the normalized number in r13
+    ; or rax, r11 ; OR rax and r11 to mark if we have seen a character
+    ;             ; each bit from 0 to 25 represents a character
+    ;             ; if we have seen it, we mark it as 1
+    ;             ; OR lets us keep the 1 no matter if we see duplicates or a new character
+    bts rax, r8 ; set the bit at the position offset indicated by r8
     jmp next
 next:
     add rdi, 1 ; increment pointer to next element in array
