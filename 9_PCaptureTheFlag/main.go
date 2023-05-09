@@ -121,8 +121,8 @@ func main() {
 		ihl := (bytes[startOfpayload] & 0x0f) << 2
 		fmt.Printf("IHL: %x\n", ihl)
 
-		payloadLen := bytes[startOfpayload+2 : startOfpayload+4]
-		fmt.Printf("Payload length: %x\n", payloadLen)
+		totalLength := binary.BigEndian.Uint16(bytes[startOfpayload+2 : startOfpayload+4])
+		fmt.Printf("Total length: %d\n", totalLength)
 
 		protocolVal := bytes[startOfpayload+9 : startOfpayload+10]
 		fmt.Printf("Protocol Value (should be 6 indicating TCP): %x\n", protocolVal)
@@ -149,6 +149,20 @@ func main() {
 
 		seqNum := binary.BigEndian.Uint32(bytes[startOfTCPHeader+4 : startOfTCPHeader+8])
 		fmt.Printf("Seq Num: %d\n", seqNum)
+
+		// specifies the size of the TCP header in 32-bit words
+		// first 4 bits of the 12th byte
+		words := bytes[startOfTCPHeader+12] >> 4
+		dataOffsetBytes := words * 4 // 32 bit words is 4 bytes
+		fmt.Printf("TCP data offset in bytes: %d\n", dataOffsetBytes)
+
+		ackFlag := (bytes[startOfTCPHeader+14])
+		fmt.Printf("ACK Flag: %08b\n", ackFlag)
+
+		tcpPayloadSize := totalLength - uint16(ihl) - uint16(dataOffsetBytes)
+		fmt.Printf("TCP payload size: %d\n", tcpPayloadSize)
+		data := bytes[startOfTCPHeader+dataOffsetBytes : startOfTCPHeader+dataOffsetBytes+uint8(tcpPayloadSize)]
+		fmt.Println(data)
 
 		// advance to the next packet length field of the next packet header
 		cur += LENGTH_CAPTURED + UNTRUNCATED_LENGTH + int(packetLength) + TIME_STAMP_SEC + TIME_STAMP_M_NSEC
