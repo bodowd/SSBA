@@ -1,8 +1,18 @@
 package main
 
-import "syscall"
+import (
+	"fmt"
+	"log"
+	"os"
+	"syscall"
+)
 
 func main() {
+	if len(os.Args) != 3 {
+		log.Fatal("Usage: go run dns.go [domain] [type] (e.g `google.com A`)")
+	}
+
+	query := NewQuery(os.Args[1], os.Args[2])
 
 	googlePublicDNS := syscall.SockaddrInet4{
 		Port: 53,
@@ -37,7 +47,40 @@ func main() {
 	//
 	// OS needs to be instructed to route any appropriate messages to this process
 	// bind does this
-	syscall.Bind(fd, syscall.SockaddrInet4{Port: 0, Addr: [4]byte{0, 0, 0, 0}})
+	// expects a SockaddrInet4 pointer
+	e = syscall.Bind(fd, &syscall.SockaddrInet4{Port: 0, Addr: [4]byte{0, 0, 0, 0}})
+	check(e)
+
+	e = syscall.Sendto(fd, Serialize(query), 0, &googlePublicDNS)
+	check(e)
+
+	// Receive/print response
+	out := make([]byte, 4096)
+	for {
+		_, from, e := syscall.Recvfrom(fd, out, 0)
+		check(e)
+
+		fromip4, ok := from.(*syscall.SockaddrInet4)
+		if !ok {
+			continue
+		}
+
+		// ignore responses from other hosts
+		if fromip4.Addr != googlePublicDNS.Addr || fromip4.Port != googlePublicDNS.Port {
+			continue
+		}
+
+		response := Deserialize(out)
+
+		// ignore responses to other queries
+		if !QueryResponseMatch(query, response) {
+			continue
+		}
+
+		fmt.Println(";; Got answer:")
+		fmt.Print(response)
+		break
+	}
 
 }
 
